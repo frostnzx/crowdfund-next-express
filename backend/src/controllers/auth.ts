@@ -93,3 +93,34 @@ export const signin: RequestHandler = async (req, res, next) => {
         }
     )(req, res, next);
 };
+
+export const refresh: RequestHandler = async (req, res) => {
+    const refreshToken = req.cookies.refreshToken;
+    if (!refreshToken) {
+        res.status(401).json({ message: "Unauthorized" });
+        return;
+    }
+    jwt.verify(
+        refreshToken,
+        process.env.JWT_SECRET!,
+        (err: Error | null, decoded: any) => {
+            if (err) {
+                res.status(403).json({ message: "Forbidden" });
+                return;
+            }
+            const accessToken = jwt.sign(
+                {
+                    userId: decoded.userId,
+                    role: decoded.role,
+                    tokenType: "access",
+                },
+                process.env.JWT_SECRET!,
+                { expiresIn: "15m" }
+            );
+            res.status(200).json({
+                message: "Access Token generated successfully",
+                accessToken,
+            });
+        }
+    );
+}
