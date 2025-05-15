@@ -18,6 +18,10 @@ import {
     InputLabel,
 } from "@mui/material";
 import Link from "next/link";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { updateCredentials } from "@/redux/slices/authSlice";
 
 interface userCredentials {
     email: string;
@@ -29,15 +33,22 @@ export default function LoginForm() {
         email: "",
         password: "",
     });
+    const dispatch = useDispatch();
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setCredentials({
             ...credentials,
-            [e.target.name]: e.target.value,
+            [e.target.name]: e.target.value ?? "",
         });
     };
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         console.log(credentials.email + " " + credentials.password);
+        const response: any = await axios.post(
+            `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/signin`,
+            credentials
+        );
+        const { accessToken } = response.data;
+        dispatch(updateCredentials(accessToken)); // Ensure setCredentials returns an action object
     };
 
     return (

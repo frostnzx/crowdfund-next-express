@@ -1,6 +1,7 @@
 import express from "express";
 import { body, cookie } from "express-validator";
-import { register, signin , refresh} from "../controllers/auth";
+import { register, signin , profile , refresh} from "../controllers/auth";
+import passport from "passport";
 
 const router = express.Router();
 
@@ -25,6 +26,13 @@ router.post(
     ],
     signin
 );
+router.get(
+    "/profile",
+    [
+        passport.authenticate("jwt", { session: false }),
+    ],
+    profile
+)
 router.post(
     "/refresh",
     [

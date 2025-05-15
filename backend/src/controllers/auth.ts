@@ -94,6 +94,22 @@ export const signin: RequestHandler = async (req, res, next) => {
     )(req, res, next);
 };
 
+export const profile: RequestHandler = async (req, res) => {
+    // check if the user is authenticated
+    if (!req.user) {
+        res.status(401).json({ message: "Unauthorized" });
+        return;
+    }
+
+    // Ensure req.user is properly typed
+    const user = req.user as { _id:string; email: string; role: string };
+
+    res.status(200).json({
+        message: "User profile",
+        user
+    });
+}
+
 export const refresh: RequestHandler = async (req, res) => {
     const refreshToken = req.cookies.refreshToken;
     if (!refreshToken) {

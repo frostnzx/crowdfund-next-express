@@ -26,10 +26,10 @@ passport.use(new LocalStrategy({usernameField : 'email' , passwordField : 'passw
 passport.use(new JwtStrategy({
   jwtFromRequest : ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey : process.env.JWT_SECRET!
-} , (jwtPayload : any , done : Function) => {
+} , async (jwtPayload : any , done : Function) => {
   try {
     // this function will decode jwt and then attach the user object to request object
-    const user = User.findById(jwtPayload.userId);
+    const user = await User.findById(jwtPayload.userId);
     done(null , user);
   } catch(err) {
     done(err);
