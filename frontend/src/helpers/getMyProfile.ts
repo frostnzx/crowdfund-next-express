@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios from "@/config/axios";
 
 interface UserProfile {
-    _id: string;
     email: string;
+    username: string;
     role: string;
 }
 
@@ -14,12 +14,7 @@ export default async function getMyProfile(
     token: string | null
 ): Promise<UserProfile> {
     const response = await axios.get<GetMyProfileResponse>(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/profile`,
-        {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        }
+        `/api/v1/auth/profile`,
     );
     return response.data.user; 
 }

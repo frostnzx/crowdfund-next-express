@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
 import auth from './routes/auth';
 import users from './routes/users';
@@ -29,9 +30,11 @@ const app = express();
 // -----------
 app.use(express.json()); // Body parser
 app.use(helmet()); // security header
-app.use(cors()); // enable cors
-// reminder : 
-// no need cookie middleware cause we use httpOnly to set refreshToken
+app.use(cors({
+  origin: process.env.FRONTEND_URL,
+  credentials: true, 
+})); // enable cors
+app.use(cookieParser());
 app.use(passport.initialize());
 // no passport.session() cause we use jwt
 

@@ -13,6 +13,7 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.8",
     "@types/dotenv": "^6.1.1",
     "@types/express": "^5.0.1",
     "@types/helmet": "^0.0.48",
@@ -33,6 +34,7 @@
     "@types/passport-jwt": "^4.0.1",
     "@types/passport-local": "^1.0.38",
     "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express-validator": "^7.2.1",

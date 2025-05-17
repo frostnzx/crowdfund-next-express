@@ -1,6 +1,6 @@
 import express from "express";
 import { body, cookie } from "express-validator";
-import { register, signin , profile , refresh} from "../controllers/auth";
+import { register, signin , signout , profile , refresh} from "../controllers/auth";
 import passport from "passport";
 
 const router = express.Router();
@@ -9,6 +9,7 @@ router.post(
     "/register",
     [
         body("email").isEmail().notEmpty().withMessage("Invalid email address"),
+        body("username").notEmpty().withMessage("Username is required"),
         body("password")
             .isLength({ min: 6 })
             .withMessage("Password must be atleast 6 characters long")
@@ -26,6 +27,10 @@ router.post(
     ],
     signin
 );
+router.post(
+    "/signout",
+    signout
+)
 router.get(
     "/profile",
     [

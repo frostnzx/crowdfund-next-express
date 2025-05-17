@@ -16,7 +16,7 @@ export const register: RequestHandler = async (req, res, next) => {
             return;
         }
 
-        const { email, password } = req.body;
+        const { email , username , password } = req.body;
 
         // Check if user already exists
         const checkUser = await User.findOne({ email });
@@ -31,6 +31,7 @@ export const register: RequestHandler = async (req, res, next) => {
 
         const user = await User.create({
             email,
+            username,
             password: hashedPassword,
             role: "user",
         });
@@ -93,6 +94,17 @@ export const signin: RequestHandler = async (req, res, next) => {
         }
     )(req, res, next);
 };
+export const signout: RequestHandler = async (req, res) => {
+    // clear the refresh token cookie
+    res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+    });
+    res.status(200).json({
+        message: "Logged out successfully",
+    });
+}
 
 export const profile: RequestHandler = async (req, res) => {
     // check if the user is authenticated
@@ -102,7 +114,7 @@ export const profile: RequestHandler = async (req, res) => {
     }
 
     // Ensure req.user is properly typed
-    const user = req.user as { _id:string; email: string; role: string };
+    const user = req.user as { email: string ; username: string ; role: string };
 
     res.status(200).json({
         message: "User profile",

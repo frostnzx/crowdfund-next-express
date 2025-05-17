@@ -6,13 +6,13 @@ import getMyProfile from "@/helpers/getMyProfile";
 import { useEffect } from "react";
 
 interface ProfileData {
-    _id: string;
     email: string;
+    username: string;
     role: string;
 }
 const initialState : ProfileData = {
-    _id: "",
     email: "",
+    username: "",
     role: "",
 }
 
@@ -35,8 +35,8 @@ export default function page() {
             <h1 className="text-2xl font-bold">Profile</h1>
             <div className="mt-4">
                 <p>Email: {profileData?.email}</p>
+                <p>Username: {profileData?.username}</p>
                 <p>Role: {profileData?.role}</p>
-                {/* Add more profile fields as needed */}
             </div>
         </div>
     );

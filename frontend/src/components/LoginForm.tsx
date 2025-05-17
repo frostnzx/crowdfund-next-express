@@ -18,10 +18,12 @@ import {
     InputLabel,
 } from "@mui/material";
 import Link from "next/link";
-import axios from "axios";
+import axios from "@/config/axios";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { updateCredentials } from "@/redux/slices/authSlice";
+import { WidthWideOutlined } from "@mui/icons-material";
+import {useRouter} from "next/navigation";
 
 interface userCredentials {
     email: string;
@@ -40,15 +42,17 @@ export default function LoginForm() {
             [e.target.name]: e.target.value ?? "",
         });
     };
+    const router = useRouter();
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         console.log(credentials.email + " " + credentials.password);
         const response: any = await axios.post(
-            `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/signin`,
+            `/api/v1/auth/signin`,
             credentials
         );
         const { accessToken } = response.data;
         dispatch(updateCredentials(accessToken)); // Ensure setCredentials returns an action object
+        router.push("/");
     };
 
     return (
